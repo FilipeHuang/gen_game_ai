@@ -1,3 +1,5 @@
+from utils import check_win, check_draw
+
 class TicTacToe:
     def __init__(self):
         self.board = [[0 for i in range(3)] for _ in range(3)]
@@ -28,45 +30,8 @@ class TicTacToe:
     
     def make_move(self, row, col): self.board[row][col] = self.cur
 
-    def check_win(self, player):
-        #row win
-        for row in self.board:
-            if all(cell == player for cell in row): return True
-        #col win
-        for col in range(3):
-            if all(self.board[row][col]==player for row in range(3)): return True
-        #diagonal win
-        if all(self.board[i][i]==player for i in range(3)): return True
-        if all(self.board[i][3-i-1]==player for i in range(3)): return True
-        #no win yet
-        return False
+    def check_win(self, player): return check_win(self.board, player)
     
-    def check_draw(self):
-        for row in self.board:
-            #check in all line if there's a empty space or not
-            if 0 in row: return False
-        return True
+    def check_draw(self): return check_draw(self.board)
     
-    def switch(self):
-        self.cur = 3 - self.cur
-    
-    def play(self):
-        print("Tic Tac Toe - Player 1 = X and Player 2 = O")
-        print("Enter moves as: row column (from 0 to 2)\n")
-        while True:
-            self.print_board()
-            row,col = self.get_move()
-            self.make_move(row,col)
-            if self.check_win(self.cur):
-                self.print_board()
-                print(f"Player {self.cur} WINS!")
-                break
-            if self.check_draw():
-                self.print_board()
-                print("DRAW")
-                break
-            self.switch()
-
-if __name__ == "__main__":
-    game = TicTacToe()
-    game.play()
+    def switch(self): self.cur = 3 - self.cur
